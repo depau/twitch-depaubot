@@ -179,5 +179,13 @@ class Bot(commands.Bot):
 
 
 if __name__ == '__main__':
+    # Since IDK how to use Windows
+    if os.path.isfile(".env"):
+        print("Sourcing environment file")
+        with open(".env") as f:
+            for line in f.readlines():
+                key, val = line.strip().split("=", 1)
+                os.environ[key] = val
+
     with Bot() as bot:
         bot.run()
