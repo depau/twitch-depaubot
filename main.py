@@ -126,7 +126,12 @@ class Bot(commands.Bot):
             says = "dice"
             user = "L'utente"
 
-        msg = f"{user} {message.author.name} {says}: {message.content}"
+        content = message.content
+        if content.startswith("!"):
+            # Strip command
+            content = content.split(" ", 1)[1]
+
+        msg = f"{user} {message.author.name} {says}: {content}"
         if lang == "en-US":
             msg = msg.replace("ddepau", "dee dehp ah hoo")
             msg = msg.replace("depau", "dehp ah hoo")
