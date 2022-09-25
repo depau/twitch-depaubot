@@ -166,11 +166,14 @@ class Bot(commands.Bot):
 
     @commands.command()
     async def req(self, ctx: commands.Context):
-        entry = cast(str, ctx.message.content).replace(f"{self._prefix}req ", "", 1)
-        self.queue[entry] = ctx.author.name
+        request = cast(str, ctx.message.content).replace(f"{self._prefix}req ", "", 1)
+        self.queue[request] = ctx.author.name
         with open(os.environ.get("QUEUE_FILE", "at_queue.txt"), "w") as f:
             for entry, user in self.queue.items():
                 f.write(f"- {user}: {entry}\n")
+        await asyncio.get_event_loop().create_task(
+            speak(f"User {ctx.author.name} requested: \"{request}\"", lang="en-US")
+        )
         await ctx.send(f"{ctx.author.name}, your request has been recorded.")
 
     @commands.command()
